@@ -49,9 +49,14 @@ int main(int argc, char* argv[])
       checkUserPurpose(output1);
     }
   }
+  output.close();
+  //^test delete
 
 }
 
+/* 
+  Start default selfish notes if "start" is command line argument
+*/
 void defaultNotes(){
   quotes.push_back("\"This time in your life is asking for your self compassion.\" -Morgan Love " );
   quotes.push_back("\"You could be the world's best garbage man, the world's best model; it don't matter what you do if you're the best.\" -Muhammad Ali" );
