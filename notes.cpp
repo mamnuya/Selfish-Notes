@@ -43,7 +43,6 @@ int main(int argc, char* argv[])
       cout << "Adding default Selfish Notes!" << endl;
       cout << " " << endl;
       defaultNotes();
-      defaultsAdded=true;
       checkUserPurpose(output1);
     }
     else{
@@ -115,45 +114,52 @@ void defaultNotes(){
   action.push_back("Make your bed.");
 }
 
+
+/*
+  Checks if user would like to add, read, or quit their selfish notes.
+*/
 void checkUserPurpose(string outpoint){
   //direct instrutions to adding to file
   ofstream output {outpoint};
   cout<<""<<endl;
-  cout << "Would you to add or read your Selfish Notes?" << endl;
+  cout << "Would you to add to -or- read the output of your Selfish Notes?" << endl;
   cout << "Enter ADD or READ on your keyboard." << endl;
   string addOrRead;
   cin >> addOrRead;
+  //Checks if user is adding
   if (addOrRead == ("ADD")){
     //add methods for adding
     cout<<""<<endl;
     cout << "Would you to add a quote, affirmation, action, or journal entry?" << endl;
     cout << "Enter QUOTE, AFFIRM, ACT, OR JOURNAL on your keyboard." << endl;
     cin >> addOrRead;
+    //inputs the user's quote, affirmation, action, or journal entry 
+    //based on user input
     if (addOrRead == ("QUOTE")){
 
 
-      //add method for adding quotes
+      //add quote
       cout << "Enter your new quote: " << endl;
       string input;
       cin >> input;
       quotes.push_back(input);
     }
     else if (addOrRead == ("AFFIRM")){
-      //add method for adding quotes
+      //add affirmation
       cout << "Enter your new affirmation: " << endl;
       string input;
       cin >> input;
       affirmation.push_back(input);
     }
     else if (addOrRead == ("ACT")){
-      //add method for adding quotes
+      //add action
       cout << "Enter your new action: " << endl;
       string input;
       cin >> input;
       action.push_back(input);
     }
     else if (addOrRead == ("JOURNAL")){
-      //add method for adding quotes
+      //add journal entry
       cout << "Enter your new journal entry: " << endl;
       string input;
       cin >> input;
@@ -165,27 +171,30 @@ void checkUserPurpose(string outpoint){
 
 
   }
+  //Checks if user is reading
   else if (addOrRead == ("READ")){
 
 
 
-    cout<<""<<endl;
-    //output<<"\n"<<"--QUOTES--"<<"\n";
-    cout<<"\n"<<"--QUOTES--"<<"\n";
+    output<<""<<endl;
+    output<<"\n"<<"--QUOTES--"<<"\n";
+    //quotes sent to output file
     if (!quotes.empty()){
       for (int i=0; i<quotes.size();i++){
-        cout<<"("<<i+1<<") "<<quotes.at(i)<<"\n";
+        output<<"("<<i+1<<") "<<quotes.at(i)<<"\n";
       }
     }
-    cout<<""<<endl;
-    cout<<"\n"<<"--AFFIRMATIONS--"<<"\n";
+    output<<""<<endl;
+    output<<"\n"<<"--AFFIRMATIONS--"<<"\n";
+    //affirmations sent to output file
     if (!affirmation.empty()){
       for (int i=0; i<affirmation.size();i++){
-        cout<<"("<<i+1<<") "<<affirmation.at(i)<<"\n";
+        output<<"("<<i+1<<") "<<affirmation.at(i)<<"\n";
       }
     }
-    cout<<""<<endl;
+    output<<""<<endl;
     output<<"\n"<<"--ACTIONS--"<<"\n";
+    //actions sent to output file
     if (!action.empty()){
       for (int i=0; i<action.size();i++){
         output<<"("<<i+1<<") "<<action.at(i)<<"\n";
@@ -193,6 +202,7 @@ void checkUserPurpose(string outpoint){
     }
     cout<<""<<endl;
     output<<"\n"<<"--JOURNAL ENTRIES--"<<"\n";
+    //journal entries sent to output file
     if (!journal.empty()){
       for (int i=0; i<journal.size();i++){
         output<<"("<<i+1<<") "<<journal.at(i)<<"\n";
@@ -201,18 +211,18 @@ void checkUserPurpose(string outpoint){
 
 
 
-    cout<<""<<endl;
+    output<<""<<endl;
     checkUserPurpose(outpoint);
   }
   else{
+    //ends program upon quitting
     if(addOrRead == ("QUIT")){
+      cout<<"If you chose to read, you should see your Selfish Notes in your output file."<<endl;
       cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
       output.close();
       return;
     }
-    else{
-
-    }
+    //recursive call if user input isn't valid
     cout<<"Sorry, I didn't understand that."<<endl;
     checkUserPurpose(outpoint);
   }
