@@ -1,3 +1,23 @@
+/*
+Whats next?
+- Read from input file 
++ work on inputParse() method
+
+- Shift default into a default input file named testinput.txt?
+
+
+- edit the entries by index in vector and type of entry
+- delete entries by index in vector and type of entry
+- make .h file
+- make different fields after journal entries, user made
+
+
+- appending vs overwriting into output file
++ try if doesn't work, specify that each output file will be overwritten if 
+its not a new file
++ FIXED w ios::app
+*/
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,28 +29,30 @@ vector<string> quotes;
 vector<string> affirmation;
 vector<string> action;
 vector<string> journal;
-bool defaultsAdded=false;
+bool inputExists=false;
 
 void defaultNotes();
 void checkUserPurpose(string outpoint);
+void inputParse(string inpoint);
 
 int main(int argc, char* argv[])
 {
-  //./fileName outputfile and start
+  //./fileName outputfile and (optional field) "default"
   //USAGE
   //g++ -std=c++17 notes.cpp -c
   //g++ -std=c++17 notes.cpp -o notes
-  //./notes hi.txt start
-  if (argc < 2 || argc > 3){
-    cerr << "Usage: " << argv[0] << " [output file]" << " [(optional string) start]" <<"\n";
+  //./notes hi.txt default
+  if (argc < 2 || argc > 4){
+    cerr << "Usage: " << argv[0] << " [output file]" << " [(optional string) \"default\"]" << " [(optional input file)]"<<"\n";
     exit(1);
   }
 
-  ofstream output {argv[1]};
+  ofstream output {argv[1], ios::app}; 
+
   string output1=argv[1];
   //throws an error if no output file provided and exits the program
   if(!output.is_open()){
-      cerr << "could not open file: " << argv[1] << endl;
+      cerr << "could not open output file: " << argv[1] << endl;
       exit(1);
   }
 
@@ -38,24 +60,66 @@ int main(int argc, char* argv[])
   cout<<"Enter QUIT at any keyboard prompt to end your session."<<endl;
   cout<<""<<endl;
 
+  ifstream input(argv[0]); //initial default value for input file
+
   if (argc==3){
-    if(strcmp(argv[2], "start") == 0){
+    if(strcmp(argv[2], "default") == 0){
       cout << "Adding default Selfish Notes!" << endl;
       cout << " " << endl;
       defaultNotes();
       checkUserPurpose(output1);
     }
     else{
+      //if there's ./notes output input, input = argv[2]
       checkUserPurpose(output1);
     }
   }
-  output.close();
-  //^test delete
+  else if (argc==4){
+     //Command line prompt ./notes output default input
+     // or ./notes output input default
+     //call input file parser
+
+  string input1;
+
+    if (strcmp(argv[2], "default") == 0){
+      input1=argv[3];
+    }
+    else if (strcmp(argv[3], "default") == 0){
+      input1 =argv[2];
+    }
+
+    //ifstream input(input1); 
+    if(!input.is_open()){
+      cerr << "could not open input file: " << input1 << endl;
+      exit(1);
+    }
+    inputExists=true;
+    inputParse(input1);
+    checkUserPurpose(output1);
+  }
+  else{
+    checkUserPurpose(output1);
+  }
+
+  if (inputExists){
+      input.close();
+    }
+
+}
+
+/*
+Parses input file contained in blocks of <start [TYPE]> <end [TYPE]>
+*/
+void inputParse(string inpoint){
+  ifstream input(inpoint);
+
+  //parse the input file through it's contained blocks
+
 
 }
 
 /* 
-  Start default selfish notes if "start" is command line argument
+  Add default selfish notes if "default" is command line argument
 */
 void defaultNotes(){
   quotes.push_back("\"This time in your life is asking for your self compassion.\" -Morgan Love " );
@@ -125,7 +189,7 @@ void defaultNotes(){
 */
 void checkUserPurpose(string outpoint){
   //direct instrutions to adding to file
-  ofstream output {outpoint};
+  ofstream output {outpoint, ios::app};
   cout<<""<<endl;
   cout << "Would you to add to -or- read the output of your Selfish Notes?" << endl;
   cout << "Enter ADD or READ on your keyboard." << endl;
@@ -168,7 +232,7 @@ void checkUserPurpose(string outpoint){
       cout << "Enter your new journal entry: " << endl;
       string input;
       cin >> input;
-      action.push_back(input);
+      journal.push_back(input);
     }
     cout<<""<<endl;
     checkUserPurpose(outpoint);
@@ -181,7 +245,51 @@ void checkUserPurpose(string outpoint){
 
 
 
+    cout<<""<<endl;
+    cout<<"\n"<<"--QUOTES--"<<"\n";
+    //quotes sent to output file
+    if (!quotes.empty()){
+      for (int i=0; i<quotes.size();i++){
+        cout<<"("<<i+1<<") "<<quotes.at(i)<<"\n";
+      }
+    }
+    cout<<""<<endl;
+    cout<<"\n"<<"--AFFIRMATIONS--"<<"\n";
+    //affirmations sent to output file
+    if (!affirmation.empty()){
+      for (int i=0; i<affirmation.size();i++){
+        cout<<"("<<i+1<<") "<<affirmation.at(i)<<"\n";
+      }
+    }
+    cout<<""<<endl;
+    cout<<"\n"<<"--ACTIONS--"<<"\n";
+    //actions sent to output file
+    if (!action.empty()){
+      for (int i=0; i<action.size();i++){
+        cout<<"("<<i+1<<") "<<action.at(i)<<"\n";
+      }
+    }
+    cout<<""<<endl;
+    cout<<"\n"<<"--JOURNAL ENTRIES--"<<"\n";
+    //journal entries sent to output file
+    if (!journal.empty()){
+      for (int i=0; i<journal.size();i++){
+        cout<<"("<<i+1<<") "<<journal.at(i)<<"\n";
+      }
+    }
+
+
+
     output<<""<<endl;
+    checkUserPurpose(outpoint);
+  }
+  else{
+    //ends program upon quitting
+    if(addOrRead == ("QUIT")){
+      cout<<"You should see your Selfish Notes in your output file."<<endl;
+      cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
+
+      output<<""<<endl;
     output<<"\n"<<"--QUOTES--"<<"\n";
     //quotes sent to output file
     if (!quotes.empty()){
@@ -205,7 +313,7 @@ void checkUserPurpose(string outpoint){
         output<<"("<<i+1<<") "<<action.at(i)<<"\n";
       }
     }
-    cout<<""<<endl;
+    output<<""<<endl;
     output<<"\n"<<"--JOURNAL ENTRIES--"<<"\n";
     //journal entries sent to output file
     if (!journal.empty()){
@@ -214,16 +322,7 @@ void checkUserPurpose(string outpoint){
       }
     }
 
-
-
     output<<""<<endl;
-    checkUserPurpose(outpoint);
-  }
-  else{
-    //ends program upon quitting
-    if(addOrRead == ("QUIT")){
-      cout<<"If you chose to read, you should see your Selfish Notes in your output file."<<endl;
-      cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
       output.close();
       return;
     }

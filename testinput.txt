@@ -1,0 +1,8 @@
+<start quotes>
+<end quotes>
+<start affirmation>
+<end affirmation>
+<start action>
+<end action>
+<start journal entries>
+<end journal entries>
