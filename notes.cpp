@@ -1,27 +1,25 @@
 /*
 Whats next?
-- Read from input file 
-+ work on inputParse() method
-
-- Shift default into a default input file named testinput.txt?
-
-
 - edit the entries by index in vector and type of entry
 - delete entries by index in vector and type of entry
+
 - make .h file
 - make different fields after journal entries, user made
 
+- Read from input file 
++ DONE with inputParse() method
 
 - appending vs overwriting into output file
-+ try if doesn't work, specify that each output file will be overwritten if 
-its not a new file
-+ FIXED w ios::app
++ DONE w ios::app
+
+
 */
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -47,6 +45,7 @@ int main(int argc, char* argv[])
     exit(1);
   }
 
+  //ios::app allows file appending instead of overwriting
   ofstream output {argv[1], ios::app}; 
 
   string output1=argv[1];
@@ -57,12 +56,15 @@ int main(int argc, char* argv[])
   }
 
   cout<<"Welcome to Selfish Notes"<<endl;
-  cout<<"Enter QUIT at any keyboard prompt to end your session."<<endl;
+  cout<<"Enter \"quit\" at any keyboard prompt to end your session."<<endl;
   cout<<""<<endl;
 
   ifstream input(argv[0]); //initial default value for input file
 
   if (argc==3){
+
+    string input1; 
+
     if(strcmp(argv[2], "default") == 0){
       cout << "Adding default Selfish Notes!" << endl;
       cout << " " << endl;
@@ -70,8 +72,18 @@ int main(int argc, char* argv[])
       checkUserPurpose(output1);
     }
     else{
-      //if there's ./notes output input, input = argv[2]
+      //Command line prompt ./notes output input
+      input1=argv[2];
+      if(!input.is_open()){
+        cerr << "could not open input file: " << input1 << endl;
+        exit(1);
+      }
+      inputExists=true;
+      cout << "Adding input file Selfish Notes!" << endl;
+      cout << " " << endl;
+      inputParse(input1);
       checkUserPurpose(output1);
+
     }
   }
   else if (argc==4){
@@ -88,12 +100,15 @@ int main(int argc, char* argv[])
       input1 =argv[2];
     }
 
-    //ifstream input(input1); 
     if(!input.is_open()){
       cerr << "could not open input file: " << input1 << endl;
       exit(1);
     }
     inputExists=true;
+    cout << "Adding default Selfish Notes!" << endl;
+    defaultNotes();
+    cout << "Adding input file Selfish Notes!" << endl;
+    cout << " " << endl;
     inputParse(input1);
     checkUserPurpose(output1);
   }
@@ -112,8 +127,87 @@ Parses input file contained in blocks of <start [TYPE]> <end [TYPE]>
 */
 void inputParse(string inpoint){
   ifstream input(inpoint);
+  string currLine;
+  bool parsingQuotes=false;
+  bool parsingAffirmations=false;
+  bool parsingActions=false;
+  bool parsingJournalEntries=false;
 
-  //parse the input file through it's contained blocks
+  while (getline(input, currLine)){
+
+    //skips blank lines
+    if (currLine == "")
+        {
+            continue;
+        }
+
+    //parse the input file through it's contained blocks
+    //uses incomplete .find strings to match atleast half
+    //of the desired input fields
+    //ie. finding "act" instead of "action" allows flexibility
+    //for act, actions, action, acts, etc
+
+    //parsing quotes
+    if(currLine.find("<start quot") != string::npos){
+      parsingQuotes=true;
+      continue;
+    }
+    else if (currLine.find("<end quot") != string::npos){
+      parsingQuotes=false;
+      continue;
+    }
+
+    if (parsingQuotes==true){
+      quotes.push_back(currLine);
+    }
+
+    //parsing affirmations
+    if(currLine.find("<start affirm") != string::npos){
+      parsingAffirmations=true;
+      continue;
+    }
+    else if (currLine.find("<end affirm") != string::npos){
+      parsingAffirmations=false;
+      continue;
+    }
+
+    if (parsingAffirmations==true){
+      affirmation.push_back(currLine);
+    }
+
+    //parsing actions
+    if(currLine.find("<start act") != string::npos){
+      parsingActions=true;
+      continue;
+    }
+    else if (currLine.find("<end act") != string::npos){
+      parsingActions=false;
+      continue;
+    }
+
+    if (parsingActions==true){
+      action.push_back(currLine);
+    }
+
+    //parsing journal entries
+    if(currLine.find("<start journal") != string::npos){
+      parsingJournalEntries=true;
+      continue;
+    }
+    else if (currLine.find("<end journal") != string::npos){
+      parsingJournalEntries=false;
+      continue;
+    }
+
+    if (parsingJournalEntries==true){
+      journal.push_back(currLine);
+    }
+
+
+
+  }
+
+  
 
 
 }
@@ -190,21 +284,23 @@ void defaultNotes(){
 void checkUserPurpose(string outpoint){
   //direct instrutions to adding to file
   ofstream output {outpoint, ios::app};
+  //ios::app allows file appending instead of overwriting
+
   cout<<""<<endl;
   cout << "Would you to add to -or- read the output of your Selfish Notes?" << endl;
-  cout << "Enter ADD or READ on your keyboard." << endl;
+  cout << "Enter \"add\" or \"read\" on your keyboard." << endl;
   string addOrRead;
   cin >> addOrRead;
   //Checks if user is adding
-  if (addOrRead == ("ADD")){
+  if (addOrRead == ("add")){
     //add methods for adding
     cout<<""<<endl;
     cout << "Would you to add a quote, affirmation, action, or journal entry?" << endl;
-    cout << "Enter QUOTE, AFFIRM, ACT, OR JOURNAL on your keyboard." << endl;
+    cout << "Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
     cin >> addOrRead;
     //inputs the user's quote, affirmation, action, or journal entry 
     //based on user input
-    if (addOrRead == ("QUOTE")){
+    if (addOrRead == ("quote")){
 
 
       //add quote
@@ -213,21 +309,21 @@ void checkUserPurpose(string outpoint){
       cin >> input;
       quotes.push_back(input);
     }
-    else if (addOrRead == ("AFFIRM")){
+    else if (addOrRead == ("affirm")){
       //add affirmation
       cout << "Enter your new affirmation: " << endl;
       string input;
       cin >> input;
       affirmation.push_back(input);
     }
-    else if (addOrRead == ("ACT")){
+    else if (addOrRead == ("act")){
       //add action
       cout << "Enter your new action: " << endl;
       string input;
       cin >> input;
       action.push_back(input);
     }
-    else if (addOrRead == ("JOURNAL")){
+    else if (addOrRead == ("journal")){
       //add journal entry
       cout << "Enter your new journal entry: " << endl;
       string input;
@@ -241,7 +337,7 @@ void checkUserPurpose(string outpoint){
 
   }
   //Checks if user is reading
-  else if (addOrRead == ("READ")){
+  else if (addOrRead == ("read")){
 
 
 
@@ -285,7 +381,7 @@ void checkUserPurpose(string outpoint){
   }
   else{
     //ends program upon quitting
-    if(addOrRead == ("QUIT")){
+    if(addOrRead == ("quit")){
       cout<<"You should see your Selfish Notes in your output file."<<endl;
       cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
 

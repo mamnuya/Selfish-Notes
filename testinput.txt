@@ -1,8 +1,17 @@
 <start quotes>
+"quote1"- ABC
+"quote2"- ABC
 <end quotes>
+
+
 <start affirmation>
+affirmation1
 <end affirmation>
+
 <start action>
 <end action>
 <start journal entries>
+journalentry1
+journalentry2
+journalentry3
 <end journal entries>
