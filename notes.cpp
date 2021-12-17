@@ -1,8 +1,86 @@
 /*
 Whats next?
 - edit the entries by index in vector and type of entry
-- delete entries by index in vector and type of entry
 
+&&&&&&&&&&&
++check if in quote vector, action vector, affirmation vector, or journal vector
+cout<<"Which category's entry would you like to edit?"<<endl;
+"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
+  create designatedVector based on type
+
+  
+if quote, enter quotes vector
+else if affirm, enter affirmation vector
+else if act, enter action vector
+else if journal, entry journal vector
+
+^ assign designated vector
+
+if designatedVector is empty, 
+cout<<"Sorry, we can't edit an empty entry."<<endl;
+checkUserPurpose(outpoint);
+
+  //change to new edited entry
+  //cout<<"Enter the number of the entry you would like to change.";
+
+  set input to indexInput;
+
+  if indexInput-1 <0 || indexInput-1 >= designatedVector.size(){
+    cout<<"Sorry, no entry exists with this number."<<endl;
+    checkUserPurpose(outpoint);
+
+  }
+  else{
+    + // erase
+  myvector.erase (myvector.begin()+ indexInput -1);
+
+    //cout<<"Let's get that changed for you."<<endl;
+    cout<<"What would you like the entry to be replaced with?"<<endl;
+    cout <<"Enter the desired entry."<<endl;
+    AKA myvector.insert(indexInput -1, stringInput);   //myvector.insert(pos, val)
+    cout<<"Thank you, you're all good!"<<endl;
+  }
+
+
+&&&&&&&&&&&
+- delete entries by index in vector and type of entry
++ // erase
+
++check if in quote vector, action vector, affirmation vector, or journal vector
+cout<<"Which category's entry would you like to delete?"<<endl;
+"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
+  create designatedVector based on type
+
+  
+if quote, enter quotes vector
+else if affirm, enter affirmation vector
+else if act, enter action vector
+else if journal, entry journal vector
+
+^ assign designated vector
+
+if designatedVector is empty, 
+cout<<"Sorry, we can't delete an empty entry."<<endl;
+checkUserPurpose(outpoint);
+
+  //change to new edited entry
+  //cout<<"Enter the number of the entry you would like to delete.";
+
+  set input to indexInput;
+
+  if indexInput-1 <0 || indexInput-1 >= designatedVector.size(){
+    cout<<"Sorry, no entry exists with this number."<<endl;
+    checkUserPurpose(outpoint);
+
+  }
+  else{
+    //cout<<"Let's get that deleted for you."<<endl;
+    myvector.erase (myvector.begin()+ indexinput -1);
+    AKA myvector.insert(indexInput -1, stringInput);   //myvector.insert(pos, val)
+    cout<<"The entry has successfully deleted. Take a deep breath for a fresh start."<<endl;
+  }
+  
+&&&&&&&&&&&
 - make .h file
 - make different fields after journal entries, user made
 
@@ -119,6 +197,8 @@ int main(int argc, char* argv[])
   if (inputExists){
       input.close();
     }
+
+    output.close();
 
 }
 
@@ -279,7 +359,7 @@ void defaultNotes(){
 
 
 /*
-  Checks if user would like to add, read, or quit their selfish notes.
+  Checks if user would like to add, read, edit, delete or quit their selfish notes.
 */
 void checkUserPurpose(string outpoint){
   //direct instrutions to adding to file
@@ -287,20 +367,20 @@ void checkUserPurpose(string outpoint){
   //ios::app allows file appending instead of overwriting
 
   cout<<""<<endl;
-  cout << "Would you to add to -or- read the output of your Selfish Notes?" << endl;
-  cout << "Enter \"add\" or \"read\" on your keyboard." << endl;
-  string addOrRead;
-  cin >> addOrRead;
+  cout << "Would you to add, read, edit, or delete output in your Selfish Notes?" << endl;
+  cout << "Enter \"add\",\"read\", \"edit\", or \"delete\"on your keyboard." << endl;
+  string purpose;
+  cin >> purpose;
   //Checks if user is adding
-  if (addOrRead == ("add")){
+  if (purpose == ("add")){
     //add methods for adding
     cout<<""<<endl;
     cout << "Would you to add a quote, affirmation, action, or journal entry?" << endl;
     cout << "Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
-    cin >> addOrRead;
+    cin >> purpose;
     //inputs the user's quote, affirmation, action, or journal entry 
     //based on user input
-    if (addOrRead == ("quote")){
+    if (purpose == ("quote")){
 
 
       //add quote
@@ -309,21 +389,21 @@ void checkUserPurpose(string outpoint){
       cin >> input;
       quotes.push_back(input);
     }
-    else if (addOrRead == ("affirm")){
+    else if (purpose == ("affirm")){
       //add affirmation
       cout << "Enter your new affirmation: " << endl;
       string input;
       cin >> input;
       affirmation.push_back(input);
     }
-    else if (addOrRead == ("act")){
+    else if (purpose == ("act")){
       //add action
       cout << "Enter your new action: " << endl;
       string input;
       cin >> input;
       action.push_back(input);
     }
-    else if (addOrRead == ("journal")){
+    else if (purpose == ("journal")){
       //add journal entry
       cout << "Enter your new journal entry: " << endl;
       string input;
@@ -337,7 +417,7 @@ void checkUserPurpose(string outpoint){
 
   }
   //Checks if user is reading
-  else if (addOrRead == ("read")){
+  else if (purpose == ("read")){
 
 
 
@@ -379,13 +459,21 @@ void checkUserPurpose(string outpoint){
     output<<""<<endl;
     checkUserPurpose(outpoint);
   }
+  //Checks if user is editing
+  else if (purpose == ("edit")){
+
+  }
+  //Checks if user is deleting
+  else if (purpose == ("delete")){
+
+  }
   else{
     //ends program upon quitting
-    if(addOrRead == ("quit")){
+    if(purpose == ("quit")){
       cout<<"You should see your Selfish Notes in your output file."<<endl;
       cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
 
-      output<<""<<endl;
+    output<<""<<endl;
     output<<"\n"<<"--QUOTES--"<<"\n";
     //quotes sent to output file
     if (!quotes.empty()){
@@ -419,8 +507,8 @@ void checkUserPurpose(string outpoint){
     }
 
     output<<""<<endl;
-      output.close();
-      return;
+    //return to main to close input/output files
+    return;
     }
     //recursive call if user input isn't valid
     cout<<"Sorry, I didn't understand that."<<endl;
