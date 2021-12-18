@@ -1,86 +1,7 @@
 /*
 Whats next?
-- edit the entries by index in vector and type of entry
-
-&&&&&&&&&&&
-+check if in quote vector, action vector, affirmation vector, or journal vector
-cout<<"Which category's entry would you like to edit?"<<endl;
-"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
-  create designatedVector based on type
-
-  
-if quote, enter quotes vector
-else if affirm, enter affirmation vector
-else if act, enter action vector
-else if journal, entry journal vector
-
-^ assign designated vector
-
-if designatedVector is empty, 
-cout<<"Sorry, we can't edit an empty entry."<<endl;
-checkUserPurpose(outpoint);
-
-  //change to new edited entry
-  //cout<<"Enter the number of the entry you would like to change.";
-
-  set input to indexInput;
-
-  if indexInput-1 <0 || indexInput-1 >= designatedVector.size(){
-    cout<<"Sorry, no entry exists with this number."<<endl;
-    checkUserPurpose(outpoint);
-
-  }
-  else{
-    + // erase
-  myvector.erase (myvector.begin()+ indexInput -1);
-
-    //cout<<"Let's get that changed for you."<<endl;
-    cout<<"What would you like the entry to be replaced with?"<<endl;
-    cout <<"Enter the desired entry."<<endl;
-    AKA myvector.insert(indexInput -1, stringInput);   //myvector.insert(pos, val)
-    cout<<"Thank you, you're all good!"<<endl;
-  }
-
-
-&&&&&&&&&&&
-- delete entries by index in vector and type of entry
-+ // erase
-
-+check if in quote vector, action vector, affirmation vector, or journal vector
-cout<<"Which category's entry would you like to delete?"<<endl;
-"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
-  create designatedVector based on type
-
-  
-if quote, enter quotes vector
-else if affirm, enter affirmation vector
-else if act, enter action vector
-else if journal, entry journal vector
-
-^ assign designated vector
-
-if designatedVector is empty, 
-cout<<"Sorry, we can't delete an empty entry."<<endl;
-checkUserPurpose(outpoint);
-
-  //change to new edited entry
-  //cout<<"Enter the number of the entry you would like to delete.";
-
-  set input to indexInput;
-
-  if indexInput-1 <0 || indexInput-1 >= designatedVector.size(){
-    cout<<"Sorry, no entry exists with this number."<<endl;
-    checkUserPurpose(outpoint);
-
-  }
-  else{
-    //cout<<"Let's get that deleted for you."<<endl;
-    myvector.erase (myvector.begin()+ indexinput -1);
-    AKA myvector.insert(indexInput -1, stringInput);   //myvector.insert(pos, val)
-    cout<<"The entry has successfully deleted. Take a deep breath for a fresh start."<<endl;
-  }
-  
-&&&&&&&&&&&
+- test edit, delete
+- test input file from previous output ...the numbers in (?) might conflict
 - make .h file
 - make different fields after journal entries, user made
 
@@ -90,6 +11,14 @@ checkUserPurpose(outpoint);
 - appending vs overwriting into output file
 + DONE w ios::app
 
+- edit the entries by index in vector and type of entry
++ DONE
+
+- delete entries by index in vector and type of entry
++ DONE
+
+- make a quitting method/figure out to see if term is quit 
++ DONE
 
 */
 
@@ -110,6 +39,7 @@ bool inputExists=false;
 void defaultNotes();
 void checkUserPurpose(string outpoint);
 void inputParse(string inpoint);
+void quitting(string out, string userInput);
 
 int main(int argc, char* argv[])
 {
@@ -461,15 +391,187 @@ void checkUserPurpose(string outpoint){
   }
   //Checks if user is editing
   else if (purpose == ("edit")){
+    cout<<"Which category's entry would you like to edit?"<<endl;
+    cout<<"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
+
+    vector<string> designatedVector;
+    string entry;
+    cin >> entry;
+    bool editQuotes=false;
+    bool editAffirmations=false;
+    bool editActions=false;
+    bool editJournalEntries=false;
+    
+    if(entry==("quote")){
+      designatedVector=quotes;
+      editQuotes=true;
+    }
+    else if(entry==("affirm")){
+      designatedVector=affirmation;
+      editAffirmations=true;
+    }
+    else if(entry==("act")){
+      designatedVector=action;
+      editActions=true;
+    }
+    else if(entry==("journal")){
+      designatedVector=journal;
+      editJournalEntries=true;
+    }
+    else if(entry==("quit")){
+      quitting(outpoint,entry);
+    }
+    else{
+      //recursive call if user input isn't valid
+    cout<<"Sorry, I didn't understand that."<<endl;
+    checkUserPurpose(outpoint);
+    }
+
+    if (designatedVector.empty()){
+      cout<<"Sorry, we can't edit an empty entry."<<endl;
+      checkUserPurpose(outpoint);
+    }
+
+    cout<<"Enter the number of the entry you would like to change."<<endl;
+    cin>>entry;
+
+  //check that user put in an entry of only digits and a valid index
+    if(entry.find_first_not_of("0123456789") == std::string::npos
+    && stoi(entry)-1>=0 && stoi(entry)-1<designatedVector.size()){
+      int indexOfEdit=stoi(entry)-1;
+      cout<<"Let's get that changed for you."<<endl;
+      cout<<""<<endl;
+      cout<<"The entry was previously: "<<designatedVector.at(indexOfEdit)<<endl;
+      cout<<""<<endl;
+      cout<<"What would you like the entry to be replaced with?"<<endl;
+      cout <<"Enter the desired entry."<<endl;
+      cin>>entry;
+      //replace the value that must be edited
+      designatedVector.at(indexOfEdit)= entry;   //insertion/replacement
+      cout<<"Thank you, you're all good!"<<endl;
+
+      //reset the designatedVector to it's corresponding category
+      if(editQuotes==true){
+        quotes=designatedVector;
+      }
+      else if(editAffirmations==true){
+        affirmation=designatedVector;
+      }
+      else if(editActions==true){
+        action=designatedVector;
+      }
+      else if(editJournalEntries==true){
+        journal=designatedVector;
+      }
+
+      checkUserPurpose(outpoint);
+    }
+    else if(entry==("quit")){
+      quitting(outpoint,entry);
+    }
+    else{
+      cout<<"Sorry, no entry exists with this number."<<endl;
+      checkUserPurpose(outpoint);
+    }
 
   }
   //Checks if user is deleting
   else if (purpose == ("delete")){
 
+
+    
+    cout<<"Which category's entry would you like to delete?"<<endl;
+    cout<<"Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
+    vector<string> designatedVector;
+    string entry;
+    cin >> entry;
+
+    bool deleteQuotes=false;
+    bool deleteAffirmations=false;
+    bool deleteActions=false;
+    bool deleteJournalEntries=false;
+    
+    if(entry==("quote")){
+      designatedVector=quotes;
+      deleteQuotes=true;
+    }
+    else if(entry==("affirm")){
+      designatedVector=affirmation;
+      deleteAffirmations=true;
+    }
+    else if(entry==("act")){
+      designatedVector=action;
+      deleteActions=true;
+    }
+    else if(entry==("journal")){
+      designatedVector=journal;
+      deleteJournalEntries=true;
+    }
+    else if(entry==("quit")){
+      quitting(outpoint,entry);
+    }
+    else{
+      //recursive call if user input isn't valid
+    cout<<"Sorry, I didn't understand that."<<endl;
+    checkUserPurpose(outpoint);
+    }
+
+    if (designatedVector.empty()){
+      cout<<"Sorry, we can't delete an empty entry."<<endl;
+      checkUserPurpose(outpoint);
+    }
+
+    cout<<"Enter the number of the entry you would like to delete.";
+    cin>>entry;
+
+    //check that user put in an entry of only digits and a valid index
+    if(entry.find_first_not_of("0123456789") == std::string::npos
+    && stoi(entry)-1>=0 && stoi(entry)-1<designatedVector.size()){
+      int indexOfEdit=stoi(entry)-1;
+      cout<<"Let's get that deleted for you."<<endl;
+      designatedVector.erase (designatedVector.begin()+ indexOfEdit);
+      cout<<"The entry has successfully deleted. Take a deep breath to welcome a fresh start."<<endl;
+
+      //reset the designatedVector to it's corresponding category
+      if(deleteQuotes==true){
+        quotes=designatedVector;
+      }
+      else if(deleteAffirmations==true){
+        affirmation=designatedVector;
+      }
+      else if(deleteActions==true){
+        action=designatedVector;
+      }
+      else if(deleteJournalEntries==true){
+        journal=designatedVector;
+      }
+
+      checkUserPurpose(outpoint);
+    }
+    else if(entry==("quit")){
+      quitting(outpoint,entry);
+    }
+    else{
+      cout<<"Sorry, no entry exists with this number."<<endl;
+      checkUserPurpose(outpoint);
+    }
+
   }
-  else{
+  else if (purpose==("quit")){
     //ends program upon quitting
-    if(purpose == ("quit")){
+    quitting(outpoint,purpose);
+    }
+  else{
+    //recursive call if user input isn't valid
+    cout<<"Sorry, I didn't understand that."<<endl;
+    checkUserPurpose(outpoint);
+    }
+}
+
+void quitting(string out, string userInput){
+  ofstream output {out, ios::app};
+  if(userInput==("quit")){
+    cout<<""<<endl;
       cout<<"You should see your Selfish Notes in your output file."<<endl;
       cout<<"Bye for now, hope to see you soon! Take care of yourself."<<endl;
 
@@ -507,11 +609,6 @@ void checkUserPurpose(string outpoint){
     }
 
     output<<""<<endl;
-    //return to main to close input/output files
-    return;
-    }
-    //recursive call if user input isn't valid
-    cout<<"Sorry, I didn't understand that."<<endl;
-    checkUserPurpose(outpoint);
+    
   }
 }
