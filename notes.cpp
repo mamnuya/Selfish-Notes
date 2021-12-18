@@ -2,6 +2,9 @@
 Whats next?
 - test edit, delete
 - test input file from previous output ...the numbers in (?) might conflict
+- make a method from main to check if user defines to clean an output file, 
+then in a new parser method clean out the (?) and overwrite, don't append to this file
+
 - make .h file
 - make different fields after journal entries, user made
 
