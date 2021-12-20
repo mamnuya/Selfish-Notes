@@ -1,1 +1,4 @@
-# selfishnotes
+# Selfish Notes
+
+##About
+### This program
