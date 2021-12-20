@@ -4,9 +4,9 @@
 <end quotes>
 
 
-<start affirmation>
+<start affirmations>
 affirmation1
-<end affirmation>
+<end affirmations>
 
 <start action>
 <end action>
