@@ -1,27 +1,12 @@
 /*
-Whats next?
-- test edit, delete
-- test input file from previous output ...the numbers in (?) might conflict
-- make a method from main to check if user defines to clean an output file, 
-then in a new parser method clean out the (?) and overwrite, don't append to this file
+Author: Mamnuya Rinki
 
-- make .h file
-- make different fields after journal entries, user made
+Summary: C++ notes program for quotes, affirmations, actions, and journal entries.
 
-- Read from input file 
-+ DONE with inputParse() method
-
-- appending vs overwriting into output file
-+ DONE w ios::app
-
-- edit the entries by index in vector and type of entry
-+ DONE
-
-- delete entries by index in vector and type of entry
-+ DONE
-
-- make a quitting method/figure out to see if term is quit 
-+ DONE
+  //USAGE
+  //g++ -std=c++17 notes.cpp -c
+  //g++ -std=c++17 notes.cpp -o notes
+  //./notes outputfile and (optional field) "default" and (optional field) inputfile
 
 */
 
@@ -46,11 +31,6 @@ void quitting(string out, string userInput);
 
 int main(int argc, char* argv[])
 {
-  //./fileName outputfile and (optional field) "default"
-  //USAGE
-  //g++ -std=c++17 notes.cpp -c
-  //g++ -std=c++17 notes.cpp -o notes
-  //./notes hi.txt default
   if (argc < 2 || argc > 4){
     cerr << "Usage: " << argv[0] << " [output file]" << " [(optional string) \"default\"]" << " [(optional input file)]"<<"\n";
     exit(1);
@@ -423,6 +403,7 @@ void checkUserPurpose(string outpoint){
     }
     else if(entry==("quit")){
       quitting(outpoint,entry);
+      return; //exits program
     }
     else{
       //recursive call if user input isn't valid
@@ -471,6 +452,7 @@ void checkUserPurpose(string outpoint){
     }
     else if(entry==("quit")){
       quitting(outpoint,entry);
+      return; //exits program
     }
     else{
       cout<<"Sorry, no entry exists with this number."<<endl;
@@ -512,6 +494,7 @@ void checkUserPurpose(string outpoint){
     }
     else if(entry==("quit")){
       quitting(outpoint,entry);
+      return; //exits program
     }
     else{
       //recursive call if user input isn't valid
@@ -524,7 +507,7 @@ void checkUserPurpose(string outpoint){
       checkUserPurpose(outpoint);
     }
 
-    cout<<"Enter the number of the entry you would like to delete.";
+    cout<<"Enter the number of the entry you would like to delete."<<endl;
     cin>>entry;
 
     //check that user put in an entry of only digits and a valid index
@@ -561,8 +544,8 @@ void checkUserPurpose(string outpoint){
 
   }
   else if (purpose==("quit")){
-    //ends program upon quitting
     quitting(outpoint,purpose);
+    return; //exits program
     }
   else{
     //recursive call if user input isn't valid
