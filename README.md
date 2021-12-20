@@ -5,9 +5,9 @@ This program takes an output file to display quotes, affirmations, actions, and 
 
 #### Usage
 Download the files in the directory. Enter the following into the command line.
-'''
+```
 Compile: g++ -std=c++17 notes.cpp -c
 Output: g++ -std=c++17 notes.cpp -o notes
 Command Line: ./notes outputfile and (optional field) "default" and (optional field) inputfile
-'''
+```
 
