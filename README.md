@@ -40,4 +40,3 @@ If a user desires to edit a previous session's generated output file, they can u
 This version can be adapted for future versions. The following improvements can be made: 
 1. Including a command line prompt to clean the (#) on an output file's entries AND include input file tags <start ?><end ?> to reuse a previous session's output file as an input file. 
 2. Allow user's to create their own categories beyond quotes, actions, affirmations, and journal entries.
-3. 
