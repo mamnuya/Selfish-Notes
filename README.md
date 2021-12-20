@@ -1,5 +1,5 @@
 # Selfish Notes
-A program that promotes the idea of self-care, that may be deemed an act of "selfishness," in a positive manner.
+## A program that promotes the idea of self-care, that may be deemed an act of "selfishness," in a positive manner.
 
 #### About
 This program takes an output file to display quotes, affirmations, actions, and journal entries. There are various options for input and output files. Entries can be added, read, edited, or deleted. This is version 1 of Selfish Notes. 
