@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
         cerr << "could not open input file: " << input1 << endl;
         exit(1);
       }
+
       inputExists=true;
       cout << "Adding input file Selfish Notes!" << endl;
       cout << " " << endl;
@@ -281,7 +282,7 @@ void checkUserPurpose(string outpoint){
 
   cout<<""<<endl;
   cout << "Would you to add, read, edit, or delete output in your Selfish Notes?" << endl;
-  cout << "Enter \"add\",\"read\", \"edit\", or \"delete\"on your keyboard." << endl;
+  cout << "Enter \"add\",\"read\", \"edit\", or \"delete\" on your keyboard." << endl;
   string purpose;
   cin >> purpose;
   //Checks if user is adding
