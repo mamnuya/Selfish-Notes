@@ -186,7 +186,7 @@ void cleanInput(string reusedInput){
     replacement.push_back(currLine);
   }
   else{
-    if(currLine.find (("^(\\d\\+)\\.\\+"))){ 
+    if(currLine.find ("(") && currLine.find (")") && !currLine.find ("--")){ 
       //add line from after (#) until end of line, into the vector of new lines
       replacement.push_back(currLine.substr(currLine.find(") ") +2));
     }

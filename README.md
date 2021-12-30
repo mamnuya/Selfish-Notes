@@ -60,3 +60,4 @@ If a user desires to edit a previous session's generated output file, they can u
 This version can be adapted for future versions. The following improvements can be made:
 1. Allow user's to create their own categories beyond quotes, actions, affirmations, and journal entries.
 2. When using previously generated output files as input files, check input file for indications of previously generated output file. If there are NO indications, exit the cleanInput() method.
+3. Specify (#) syntax in the if-statement of the cleanInput() method.
