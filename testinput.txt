@@ -15,3 +15,26 @@ journalentry1
 journalentry2
 journalentry3
 <end journal entries>
+
+
+
+
+<start quotes>
+"quote3"- ABC
+"quote4"- ABC
+<end quotes>
+
+
+<start affirmations>
+affirmation2
+<end affirmations>
+
+<start actions>
+action1
+<end action>
+<start journal entries>
+journalentry4
+journalentry5
+<end journal entries>
+
+
