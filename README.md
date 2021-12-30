@@ -41,6 +41,8 @@ This file adheres to a the following tag format:
 #### Output File Format
 If a file existing with the desire output file name, it will be appended to upon the "quit" command. If a file does not already exist with the desired output file name, a new file will be created then appeneded to. This is a great way to record entries per day by assigning an output file name by day, or record entries over a longer period of time. 
 
+The output file follows the format as indicated by the [reusedoutput.txt](https://github.com/mamnuya/Selfish-Notes/blob/main/reusedoutput.txt) file in the directory. This output file uses [testinput.txt](https://github.com/mamnuya/Selfish-Notes/blob/main/testinput.txt) as an input file.
+
 This file produces the following section format:
 ```
 --QUOTES--
