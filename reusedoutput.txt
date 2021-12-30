@@ -1,0 +1,29 @@
+
+
+
+
+
+
+--QUOTES--
+(1) "quote1"- ABC
+(2) "quote2"- ABC
+(3) "quote3"- ABC
+(4) "quote4"- ABC
+
+
+--AFFIRMATIONS--
+(1) affirmation1
+(2) ffirmation2
+
+
+--ACTIONS--
+(1) action1
+
+
+--JOURNAL ENTRIES--
+(1) journalentry1
+(2) journalentry2
+(3) journalentry3
+(4) journalentry4
+(5) journalentry5
+

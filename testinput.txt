@@ -26,7 +26,7 @@ journalentry3
 
 
 <start affirmations>
-affirmation2
+ffirmation2
 <end affirmations>
 
 <start actions>
