@@ -34,7 +34,7 @@ Placing the input file before or after any (optional) "default" string reads in 
 If a file existing with the desire output file name, it will be appended to upon the "quit" command. If a file does not already exist with the desired output file name, a new file will be created then appeneded to. This is a great way to record entries per day by assigning an output file name by day, or record entries over a longer period of time. 
 
 #### Input and Output Files
-If a user desires to edit a previous session's generated output file, they can use the previous output file to be used as in input file. The cleanInput() method will remove any numbers preceding an entry ((#) example entry). Therefore, the (#) would need to be removed to prevent number overlap, and the input file tag format will be inserted maintained.
+If a user desires to edit a previous session's generated output file, they can use the previous output file to be used as in input file. The cleanInput() method will remove any numbers preceding an entry ((#) example entry). Therefore, the (#) would need to be removed to prevent number overlap, and the input file tag format will be inserted and maintained.
 
 #### What's Next?
 This version can be adapted for future versions. The following improvements can be made:
