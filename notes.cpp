@@ -135,8 +135,6 @@ When an old output file is used as a new input file,
 replaces old output file syntax with input file syntax accordingly
 */
 void cleanInput(string reusedInput){
-  cout<<"Cleaning your old output as an input!"<<endl;//rinki delete
-
   //open and read the input file
   ifstream oldFile {reusedInput}; 
   string currLine;
@@ -150,46 +148,37 @@ void cleanInput(string reusedInput){
   while(getline(oldFile, currLine)){
     //implement <start TYPE> and <end TYPE> tags
     if(currLine.find("--") != string::npos){
-      cout<<"YES did not find headers"<<endl; //rinki delete
       if (currLine.find("--QUOTE") != string::npos){
             if (cleaningJournalEntries==true){
+              //add journal entries tag and reset boolean
+              //if there are more quotes and values after first journal entries section
               replacement.push_back("<end journal entries>");
               cleaningJournalEntries=false;
             }
             cleaningQuotes=true;
             replacement.push_back("<start quotes>");
         }
-        else if(currLine.find("--AFFIRM") != string::npos ){ //&& cleaningQuotes==true //rinki check
-          //cleaningQuotes=false; //rinki check
+        else if(currLine.find("--AFFIRM") != string::npos ){ 
           cleaningAffirmations=true;
           replacement.push_back("<end quotes>");
           replacement.push_back("<start affirmations>");
         }
-        else if(currLine.find("--ACT") != string::npos ){ //&& cleaningAffirmations==true //rinki check
-          //cleaningAffirmations=false; //rinki check
+        else if(currLine.find("--ACT") != string::npos ){ 
           cleaningActions=true;
           replacement.push_back("<end affirmations>");
           replacement.push_back("<start actions>");
         }
-        else if(currLine.find("--JOURNAL") != string::npos ){ //&& cleaningActions==true //rinki check
-          //cleaningActions=false; //rinki check
+        else if(currLine.find("--JOURNAL") != string::npos ){
           cleaningJournalEntries=true;
           replacement.push_back("<end actions>");
           replacement.push_back("<start journal entries>");
-          if (cleaningQuotes){ //rinki check if statement
+
+          //if reaching the end of quotes, reset all cleaning booleans
+          if (cleaningQuotes==true){ 
             cleaningQuotes=false;
             cleaningAffirmations=false;
             cleaningActions=false;
-            //cleaningJournalEntries=false;
           }
-
-          /*
-          //include final end tag once reading end of file
-          replacement.push_back("<end journal entries>");
-          cleaningJournalEntries=false;
-          */
-
-          //rinki fix tag mix up with multiple tags
         }
   }
   else if(currLine ==""){
@@ -197,9 +186,7 @@ void cleanInput(string reusedInput){
     replacement.push_back(currLine);
   }
   else{
-    cout<<"NO did not find headers"<<endl; //rinki delete
     if(currLine.find (("^(\\d\\+)\\.\\+"))){ 
-      cout<<"In regex if statement."<<endl;//rinki delete
       //add line from after (#) until end of line, into the vector of new lines
       replacement.push_back(currLine.substr(currLine.find(") ") +2));
     }
