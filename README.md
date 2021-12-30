@@ -24,7 +24,7 @@ Input files can have multiple sections of quotes, actions, affirmations, and jou
 Placing the string "default" before or after any (optional) input file, inserts a list of default quotes, affirmations, and actions into the output file.
 
 #### Input File Format
-Placing the input file before or after any (optional) "default" string reads in any quote, affirmations, and actions to the desired output file. The input file should follow the format as indicated by the (testinput.txt)[https://github.com/mamnuya/Selfish-Notes/blob/main/testinput.txt] file in the directory. 
+Placing the input file before or after any (optional) "default" string reads in any quote, affirmations, and actions to the desired output file. The input file should follow the format as indicated by the [testinput.txt](https://github.com/mamnuya/Selfish-Notes/blob/main/testinput.txt) file in the directory. 
 
 This file adheres to a the following tag format:
 ```
