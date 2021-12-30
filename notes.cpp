@@ -15,6 +15,7 @@ Summary: C++ notes program for quotes, affirmations, actions, and journal entrie
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <regex>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ void defaultNotes();
 void checkUserPurpose(string outpoint);
 void inputParse(string inpoint);
 void quitting(string out, string userInput);
+void cleanInput(string reusedInput);
 
 int main(int argc, char* argv[])
 {
@@ -71,6 +73,12 @@ int main(int argc, char* argv[])
       }
 
       inputExists=true;
+      
+      //Adjust old generated output files
+      //to incorporate input file syntax
+      cleanInput(input1);
+
+
       cout << "Adding input file Selfish Notes!" << endl;
       cout << " " << endl;
       inputParse(input1);
@@ -97,6 +105,12 @@ int main(int argc, char* argv[])
       exit(1);
     }
     inputExists=true;
+
+    //Adjust old generated output files
+    //to incorporate input file syntax
+    cleanInput(input1);
+
+
     cout << "Adding default Selfish Notes!" << endl;
     defaultNotes();
     cout << "Adding input file Selfish Notes!" << endl;
@@ -115,6 +129,97 @@ int main(int argc, char* argv[])
     output.close();
 
 }
+
+/*
+When an old output file is used as a new input file,
+replaces old output file syntax with input file syntax accordingly
+*/
+void cleanInput(string reusedInput){
+  cout<<"Cleaning your old output as an input!"<<endl;//rinki delete
+
+  //open and read the input file
+  ifstream oldFile {reusedInput}; 
+  string currLine;
+  bool cleaningQuotes=false;
+  bool cleaningAffirmations=false;
+  bool cleaningActions=false;
+  bool cleaningJournalEntries=false;
+  vector<string> replacement;
+
+
+  while(getline(oldFile, currLine)){
+    //implement <start TYPE> and <end TYPE> tags
+    if(currLine.find("--") != string::npos){
+      cout<<"YES did not find headers"<<endl; //rinki delete
+      if (currLine.find("--QUOTE") != string::npos){
+            if (cleaningJournalEntries==true){
+              replacement.push_back("<end journal entries>");
+              cleaningJournalEntries=false;
+            }
+            cleaningQuotes=true;
+            replacement.push_back("<start quotes>");
+        }
+        else if(currLine.find("--AFFIRM") != string::npos ){ //&& cleaningQuotes==true //rinki check
+          //cleaningQuotes=false; //rinki check
+          cleaningAffirmations=true;
+          replacement.push_back("<end quotes>");
+          replacement.push_back("<start affirmations>");
+        }
+        else if(currLine.find("--ACT") != string::npos ){ //&& cleaningAffirmations==true //rinki check
+          //cleaningAffirmations=false; //rinki check
+          cleaningActions=true;
+          replacement.push_back("<end affirmations>");
+          replacement.push_back("<start actions>");
+        }
+        else if(currLine.find("--JOURNAL") != string::npos ){ //&& cleaningActions==true //rinki check
+          //cleaningActions=false; //rinki check
+          cleaningJournalEntries=true;
+          replacement.push_back("<end actions>");
+          replacement.push_back("<start journal entries>");
+          if (cleaningQuotes){ //rinki check if statement
+            cleaningQuotes=false;
+            cleaningAffirmations=false;
+            cleaningActions=false;
+            //cleaningJournalEntries=false;
+          }
+
+          /*
+          //include final end tag once reading end of file
+          replacement.push_back("<end journal entries>");
+          cleaningJournalEntries=false;
+          */
+
+          //rinki fix tag mix up with multiple tags
+        }
+  }
+  else if(currLine ==""){
+    //add blank lines to vector of new lines
+    replacement.push_back(currLine);
+  }
+  else{
+    cout<<"NO did not find headers"<<endl; //rinki delete
+    if(currLine.find (("^(\\d\\+)\\.\\+"))){ 
+      cout<<"In regex if statement."<<endl;//rinki delete
+      //add line from after (#) until end of line, into the vector of new lines
+      replacement.push_back(currLine.substr(currLine.find(") ") +2));
+    }
+    else{
+      replacement.push_back(currLine);
+    }
+  }
+}
+
+//open and overwrite the input file
+//ios::app allows file overwriting instead of appending
+ofstream cleaned {reusedInput, ios::trunc};
+for (int i=0; i<replacement.size();i++){
+  cleaned<<replacement.at(i)<<"\n";
+}
+cleaned.close(); 
+
+
+}
+
 
 /*
 Parses input file contained in blocks of <start [TYPE]> <end [TYPE]>
@@ -281,7 +386,7 @@ void checkUserPurpose(string outpoint){
   //ios::app allows file appending instead of overwriting
 
   cout<<""<<endl;
-  cout << "Would you to add, read, edit, or delete output in your Selfish Notes?" << endl;
+  cout << "Would you like to add, read, edit, or delete output in your Selfish Notes?" << endl;
   cout << "Enter \"add\",\"read\", \"edit\", or \"delete\" on your keyboard." << endl;
   string purpose;
   cin >> purpose;
@@ -289,7 +394,7 @@ void checkUserPurpose(string outpoint){
   if (purpose == ("add")){
     //add methods for adding
     cout<<""<<endl;
-    cout << "Would you to add a quote, affirmation, action, or journal entry?" << endl;
+    cout << "Would you like to add a quote, affirmation, action, or journal entry?" << endl;
     cout << "Enter \"quote\", \"affirm\", \"act\", OR \"journal\" on your keyboard." << endl;
     cin >> purpose;
     //inputs the user's quote, affirmation, action, or journal entry 
@@ -326,6 +431,7 @@ void checkUserPurpose(string outpoint){
     }
     cout<<""<<endl;
     checkUserPurpose(outpoint);
+    return;
 
 
 
